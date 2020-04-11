@@ -98,3 +98,52 @@ docker inspect -f ' { {range.NetworkSettings.Networks } } { { .IPAddress } } { {
 docker inspect -f "{{.NetworkSettings.IPAddress}}" app_nginx
 
 docker-machine ls
+
+REDES
+======
+
+
+docker network create my-network
+docker network ls
+docker inspect my-network
+
+
+docker create -v /var/lib/postgresql/data --name PostgresDataDocker alpine
+
+docker run --name postgresdocker -e POSTGRES_PASSWORD=postgres -d --net=my-network --volumes-from PostgresDataDocker postgres
+
+docker run -it --name ubuntudocker -p 8069:8069 --net=my-network ubuntu:18.04
+	root@2e8a4b1e3842:/# apt-get update
+	root@2e8a4b1e3842:/# apt-get install iputils-ping
+	root@2e8a4b1e3842:/# ping postgresdocker
+
+
+VOLUMENES
+=========
+
+docker run -it --name ubuntudocker -v D:\DOCKER\docker\:/home/ ubuntu:18.04
+
+
+PUERTOS Y VARIABLES
+===================
+
+docker run --name postgres-docker -e POSTGRES_PASSWORD=Aforo255#2019   -d -p 5438:5432  postgres
+
+
+
+DOCKER COMPOSE
+
+docker-compose -f .\docker-compose-test.yml up -d
+docker-compose -f .\docker-compose-fabio.yml down
+
+
+
+
+NOTA: Para eliminar todos los contenedores de docker
+
+docker rm -f $(docker ps -a -q)
+
+##### Portainer io##########
+$ docker volume create portainer_data
+$ docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+
